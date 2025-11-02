@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useProducts } from '@/composables/useProducts';
 
 const { products, loading, error, fetchProducts } = useProducts();
+import { useAuth0 } from '@auth0/auth0-vue';
+const { isAuthenticated } = useAuth0();
 
 onMounted(() => {
   fetchProducts();
+});
+
+watch(isAuthenticated, () => {
+  // Re-fetch when auth state changes to reflect public vs private data
+  fetchProducts(true);
 });
 
 const formatPrice = (p?: number) =>
