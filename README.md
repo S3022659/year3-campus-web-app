@@ -48,13 +48,14 @@ Call you app something like `products-dev-app`.
 
 ```bash
 auth0 apps create \
- --name <your-app-name> \
+ --name campus-device-loan \
  --type spa \
  --no-input \
  --json
 ```
 
 Take note of the `client_id` from the output.
+gkW47pffZrg4YDXIX91EEhnHrHHuyRTV
 
 ### 4. Create Test User
 
@@ -68,6 +69,10 @@ auth0 users create \
 
 Note the username and password as you'll need to sign in using them later.
 
+ID auth0|69286ab957b817bdb93971a3  
+ EMAIL testuser1@example.com  
+ CONNECTION Username-Password-Authentication
+
 ### 5 Update App's Allowed Callbacks
 
 Auth0 will only allow sign in to your registered app if the request comes from a list of permitted URLs.
@@ -75,7 +80,7 @@ Auth0 will only allow sign in to your registered app if the request comes from a
 Register localhost for local testing:
 
 ```bash
-auth0 apps update <client_id> \
+auth0 apps update gkW47pffZrg4YDXIX91EEhnHrHHuyRTV \
  --callbacks "http://localhost:5173" \
  --logout-urls "http://localhost:5173" \
  --no-input \
@@ -85,7 +90,7 @@ auth0 apps update <client_id> \
 > You will need to also list your Azure Storage Account URL if you deploy your app to Azure. For example:
 
 ```bash
-auth0 apps update <client_id> \
+auth0 apps update gkW47pffZrg4YDXIX91EEhnHrHHuyRTV \
  --callbacks "http://localhost:5173, https://reviewstestab47store.z33.web.core.windows.net" \
  --logout-urls "http://localhost:5173, https://reviewstestab47store.z33.web.core.windows.net" \
  --no-input \

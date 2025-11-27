@@ -77,8 +77,10 @@ const year = new Date().getFullYear();
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
-  transition: background .12s ease, transform .06s ease;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  transition:
+    background 0.12s ease,
+    transform 0.06s ease;
 }
 .auth button:hover {
   background: #1d4ed8;
@@ -96,7 +98,7 @@ const year = new Date().getFullYear();
 }
 
 .footer {
-  border-top: 1px solid rgba(15,23,36,0.06);
+  border-top: 1px solid rgba(15, 23, 36, 0.06);
   background: var(--card, #fff);
   color: var(--muted, #6b7280);
   font-size: 0.9rem;
@@ -110,6 +112,11 @@ const year = new Date().getFullYear();
   max-width: 1200px;
   margin: 0 auto;
 }
-.footer a { color: var(--muted, #6b7280); }
-.footer .dot { margin: 0 0.5rem; color: rgba(0,0,0,0.16); }
+.footer a {
+  color: var(--muted, #6b7280);
+}
+.footer .dot {
+  margin: 0 0.5rem;
+  color: rgba(0, 0, 0, 0.16);
+}
 </style>
