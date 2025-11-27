@@ -56,6 +56,7 @@ auth0 apps create \
 
 Take note of the `client_id` from the output.
 gkW47pffZrg4YDXIX91EEhnHrHHuyRTV
+domain dev-5g3kyrzmhn3l8ffu.uk.auth0.com
 
 ### 4. Create Test User
 
