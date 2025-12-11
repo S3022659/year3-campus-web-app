@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue';
 import { appConfig } from '@/config/appConfig';
 import { useAuth0 } from '@auth0/auth0-vue';
 
-export type Product = {
+export type Device = {
   id: string;
   name: string;
   pricePence?: number;
@@ -11,18 +11,19 @@ export type Product = {
 
 const API_BASE = appConfig.apiBaseUrl;
 
-export function useProducts() {
+export function useDevices() {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const products: Ref<Product[]> = ref([]);
+  const devices: Ref<Device[]> = ref([]);
   const loading = ref(false);
   const error: Ref<string | null> = ref(null);
 
-  const fetchProducts = async (force = false) => {
+  const fetchDevices = async (force = false) => {
     if (loading.value) return;
     loading.value = true;
     error.value = null;
     try {
-      const url = new URL('products', API_BASE).toString();
+      const url = new URL('devices', API_BASE).toString();
+      console.log(url);
       const headers: Record<string, string> = { Accept: 'application/json' };
       if (isAuthenticated.value) {
         try {
@@ -35,10 +36,10 @@ export function useProducts() {
       const res = await fetch(url, { headers });
       if (!res.ok)
         throw new Error(
-          `Failed to fetch products: ${res.status} ${res.statusText}`,
+          `Failed to fetch devices: ${res.status} ${res.statusText}`,
         );
-      const data: Product[] = await res.json();
-      products.value = Array.isArray(data) ? data : [];
+      const data: Device[] = await res.json();
+      devices.value = Array.isArray(data) ? data : [];
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Unknown error';
     } finally {
@@ -46,5 +47,5 @@ export function useProducts() {
     }
   };
 
-  return { products, loading, error, fetchProducts };
+  return { devices: devices, loading, error, fetchDevices };
 }

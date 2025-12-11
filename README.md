@@ -44,7 +44,7 @@ Keep a note of your domain as you will need it later.
 
 ### 3. Register an SPA application
 
-Call you app something like `products-dev-app`.
+Call you app something like `devices-dev-app`.
 
 ```bash
 auth0 apps create \
@@ -127,7 +127,7 @@ Open `http://localhost:5173` in your browser.
 
 You should be able to sign-in using test user account created earlier.
 
-You will need to configure the app to use your copy of the `cis3039-example-security-svc` service for fetching products:
+You will need to configure the app to use your copy of the `cis3039-example-security-svc` service for fetching devices:
 
 ```env
 VITE_API_BASE_URL=https://<your-func-app>.azurewebsites.net/api/

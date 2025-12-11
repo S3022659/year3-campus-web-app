@@ -10,12 +10,12 @@ export interface AppConfig {
 export function loadAppConfig(): AppConfig {
   const apiBaseUrl =
     (import.meta.env.VITE_API_BASE_URL as string) ??
-    'http://localhost:7071/api/';
+    'https://ica-function-jc76.azurewebsites.net/api/';
   const domain = (import.meta.env.VITE_AUTH0_DOMAIN as string) ?? '';
   const clientId = (import.meta.env.VITE_AUTH0_CLIENT_ID as string) ?? '';
   const audience =
     (import.meta.env.VITE_AUTH0_AUDIENCE as string | undefined) || undefined;
-
+  console.log(apiBaseUrl);
   return {
     apiBaseUrl,
     auth0: { domain, clientId, audience },
@@ -31,7 +31,7 @@ export function buildAuth0Options(cfg: AppConfig) {
     authorizationParams: {
       redirect_uri: window.location.origin,
       audience: cfg.auth0.audience,
-      scope: 'openid profile email read:products',
+      scope: 'openid profile email read:devices',
     },
     cacheLocation: 'localstorage' as const,
     useRefreshTokens: true,
