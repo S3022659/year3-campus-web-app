@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.4.0",
+    "pinia": "^2.1.6",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },

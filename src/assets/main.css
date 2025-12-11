@@ -1,0 +1,28 @@
+/* Minimal global styles - created by assistant to match import in main.ts */
+:root {
+  --background: #f7f7fb;
+  --text: #222;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial;
+}
+
+/* small helper */
+.container {
+  padding: 1rem;
+}
