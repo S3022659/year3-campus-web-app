@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { appConfig } from '@/config/appConfig';
 import { useAuth0 } from '@auth0/auth0-vue';
 import type { Device } from '@/composables/useDevices';
+import { trackEvent, trackError } from '@/telemetry/telemetry';
 
 const route = useRoute();
 const router = useRouter();
@@ -19,11 +20,11 @@ const formatPrice = (p?: number | null) =>
 const fetchDevice = async () => {
   loading.value = true;
   error.value = null;
+  const started = performance.now();
   try {
     const deviceId = route.params.id;
     // Fetch all devices since individual endpoint doesn't exist yet
     const url = new URL('devices', appConfig.apiBaseUrl).toString();
-    console.log('Fetching devices from:', url);
     const headers: Record<string, string> = { Accept: 'application/json' };
 
     if (isAuthenticated.value) {
@@ -49,8 +50,23 @@ const fetchDevice = async () => {
     }
 
     device.value = foundDevice;
+    trackEvent('device_detail_fetch_success', {
+      deviceId: String(deviceId),
+      authenticated: isAuthenticated.value,
+      durationMs: Math.round(performance.now() - started),
+    });
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Unknown error';
+    trackError(e, {
+      action: 'fetch_device_detail',
+      deviceId: String(route.params.id),
+      authenticated: isAuthenticated.value,
+    });
+    trackEvent('device_detail_fetch_failure', {
+      deviceId: String(route.params.id),
+      authenticated: isAuthenticated.value,
+      durationMs: Math.round(performance.now() - started),
+    });
   } finally {
     loading.value = false;
   }

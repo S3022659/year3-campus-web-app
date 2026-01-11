@@ -133,6 +133,48 @@ You will need to configure the app to use your copy of the `cis3039-example-secu
 VITE_API_BASE_URL=https://<your-func-app>.azurewebsites.net/api/
 ```
 
+## Observability
+
+The SPA now emits client-side telemetry to Azure Application Insights so you can forward it to your Log Analytics workspace `ica-workspace-jc76`.
+
+1. Create (or reuse) an Application Insights resource that is linked to the workspace:
+
+```bash
+az monitor app-insights component create \
+  --app <your-appinsights-name> \
+  --location <permitted-location> \
+  --resource-group <your-resource-group> \
+  --workspace ica-workspace-jc76
+
+az monitor app-insights component update \
+  --app <your-appinsights-name> \
+  --resource-group <your-resource-group> \
+  --workspace ica-workspace-jc76
+```
+
+2. Add the connection string to your local/dev env file so the SPA can send telemetry:
+
+```env
+VITE_APPINSIGHTS_CONNECTION_STRING=InstrumentationKey=<key>;IngestionEndpoint=https://<region>.ingest.monitor.azure.com/;LiveEndpoint=https://<region>.livediagnostics.monitor.azure.com/
+```
+
+> You can also set `VITE_APPINSIGHTS_INSTRUMENTATION_KEY` if you prefer the legacy key.
+
+3. What is captured:
+
+- Page views via router navigation
+- Device list fetch start/success/failure (with duration and counts)
+- Device detail fetch success/failure (with duration)
+- Errors are sent as exceptions with context fields (action, deviceId, auth state)
+
+4. Query in Log Analytics (example):
+
+```kusto
+customEvents
+| where name startswith "devices_" or name startswith "device_detail"
+| project timestamp, name, tostring(customDimensions.authenticated), customMeasurements.durationMs, customMeasurements.count
+```
+
 ## How the project was made
 
 ```bash
@@ -160,3 +202,7 @@ Update preferences in `.prettierrc.json`:
 - `"semi": true`
 - `"singleQuote": true`
 - `"printWidth": 80`
+
+az monitor app-insights component show --app ica-workspace-jc76 --resource-group ica-rg --query "connectionString" -o tsv
+
+az monitor app-insights component list --query "[].{name:name,rg:resourceGroup}" -o table
